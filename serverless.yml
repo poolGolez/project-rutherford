@@ -14,12 +14,6 @@ custom:
     dockerizePip: non-linux
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - httpApi:
-          path: /
-          method: get
   get-quotes:
     handler: handlers/get_quotes.handler
     role: getQuotesFunctionExecutionRole
