@@ -1,0 +1,12 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    "Description" : "CloudFormation Template for S3 bucket",
+    "Resources" : {
+      "QuotesBucket" : {
+        "Type" : "AWS::S3::Bucket",
+        "Properties" : {
+            "BucketName": "project-rutherford-65819"
+        }
+      }
+    }
+  }
