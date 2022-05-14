@@ -19,5 +19,7 @@ var/
 node_modules/
 **__pycache__**
 
+unzip_requirements.py
+
 # Serverless directories
 .serverless
