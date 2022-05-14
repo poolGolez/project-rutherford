@@ -1,9 +1,23 @@
 service: project-rutherford
 frameworkVersion: '3'
 
+plugins:
+  - serverless-python-requirements
+  - serverless-offline
 provider:
   name: aws
   runtime: python3.8
+  region: ap-southeast-2
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+    zip: true
+    #Get rid of unnecessary package files
+    slim: true
+    #But keep necessary binary files to avoid "ELF load command address/offset not properly aligned"
+    strip: false
+    layer: true
 
 functions:
   hello:
@@ -11,4 +25,10 @@ functions:
     events:
       - httpApi:
           path: /
+          method: get
+  get-quotes:
+    handler: handlers/get_quotes.handler
+    events:
+      - httpApi:
+          path: /api/v1/quotes
           method: get
