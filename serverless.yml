@@ -7,17 +7,11 @@ plugins:
 provider:
   name: aws
   runtime: python3.8
-  region: ap-southeast-2
+  region: ap-southeast-1
 
 custom:
   pythonRequirements:
     dockerizePip: non-linux
-    zip: true
-    #Get rid of unnecessary package files
-    slim: true
-    #But keep necessary binary files to avoid "ELF load command address/offset not properly aligned"
-    strip: false
-    layer: true
 
 functions:
   hello:
@@ -28,7 +22,48 @@ functions:
           method: get
   get-quotes:
     handler: handlers/get_quotes.handler
+    role: getQuotesFunctionExecutionRole
     events:
       - httpApi:
           path: /api/v1/quotes
           method: get
+
+resources:
+  Resources:
+    getQuotesFunctionExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: project-rutherford-get-quotes-lambda-execution-role
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: project-rutherford-lambda-cloudwatch-policy
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                      - ':'
+                      -
+                        - 'arn:aws:logs'
+                        - Ref: 'AWS::Region'
+                        - Ref: 'AWS::AccountId'
+                        - 'log-group:/aws/lambda/project-rutherford:*:*'
+          - PolicyName: project-rutherford-lambda-s3-read
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Resource: arn:aws:s3:::project-rutherford-65819/*
+                  Action: s3:GetObject
