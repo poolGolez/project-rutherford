@@ -59,5 +59,10 @@ resources:
               Version: '2012-10-17'
               Statement:
                 - Effect: Allow
-                  Resource: arn:aws:s3:::project-rutherford-65819/*
                   Action: s3:GetObject
+                  Resource:
+                    - 'Fn::Join':
+                      - '/'
+                      -
+                        - 'Fn::ImportValue': 'project-rutherford-s3-stack--S3Bucket-ARN'
+                        - '*'
