@@ -21,6 +21,12 @@ functions:
       - httpApi:
           path: /api/v1/quotes
           method: get
+  subscribe:
+    handler: handlers/subscribe.handler
+    events:
+      - httpApi:
+          path: /api/v1/subscribe
+          method: post
 
 resources:
   Resources:
