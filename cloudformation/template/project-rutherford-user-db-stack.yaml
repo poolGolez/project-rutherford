@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation Template for SNS
+Resources:
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: project-rutherford-users-table
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+Outputs:
+  UsersTableArn:
+    Description: ARN of the users DynamoDB table
+    Value: !GetAtt [UsersTable, Arn]
+    Export:
+      Name: !Sub "${AWS::StackName}--UsersTable-ARN"
