@@ -15,8 +15,13 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
 Outputs:
+  UsersTableName:
+    Description: Name of the Users DynamoDB table
+    Value: !Ref UsersTable
+    Export:
+      Name: !Sub "${AWS::StackName}--UsersTable-Name"
   UsersTableArn:
-    Description: ARN of the users DynamoDB table
+    Description: ARN of the Users DynamoDB table
     Value: !GetAtt [UsersTable, Arn]
     Export:
       Name: !Sub "${AWS::StackName}--UsersTable-ARN"
