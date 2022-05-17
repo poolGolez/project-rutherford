@@ -6,10 +6,10 @@ Resources:
     Properties:
       TableName: project-rutherford-users-table
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: PK
           AttributeType: S
       KeySchema:
-        - AttributeName: id
+        - AttributeName: PK
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
