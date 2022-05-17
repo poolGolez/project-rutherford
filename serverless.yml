@@ -107,6 +107,8 @@ resources:
               Version: "2012-10-17"
               Statement:
                 - Effect: Allow
-                  Action: dynamodb:PutItem
+                  Action:
+                    - dynamodb:PutItem
+                    - dynamodb:TransactWriteItems
                   Resource:
                     "Fn::ImportValue": "project-rutherford-users-db-stack--UsersTable-ARN"
