@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation Template for new subscriberSNS messaging
+Resources:
+  NewSubscriberTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: project-rutherford-new-subscriber-topic
+Outputs:
+  QuotesBucket:
+    Description: New Subscriber Topic Name
+    Value: !GetAtt [ NewSubscriberTopic, TopicName ]
+    Export:
+      Name: !Sub "${AWS::StackName}--NewSubscriber-TopicName"
