@@ -5,6 +5,10 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: project-rutherford-new-subscriber-topic
+      Subscription:
+        - Protocol: email
+          Endpoint: rutherford.master@yopmail.com
+
 Outputs:
   QuotesBucket:
     Description: New Subscriber Topic Name
