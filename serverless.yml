@@ -113,3 +113,12 @@ resources:
                     - dynamodb:TransactWriteItems
                   Resource:
                     "Fn::ImportValue": "project-rutherford-users-db-stack--UsersTable-ARN"
+          - PolicyName: project-rutherford-lambda-new-subscriber-subscribe
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - sns:Subscribe
+                  Resource:
+                    "Fn::ImportValue": "project-rutherford-sns-new-subscriber-stack--NewSubscriber-ARN"
