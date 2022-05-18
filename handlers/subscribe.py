@@ -17,13 +17,7 @@ def handler(event, context):
 
     try:
         item = save_db_record(email)
-
-        subscription = sns.subscribe(
-            TopicArn=topic_arn,
-            Protocol="email",
-            Endpoint=email,
-            ReturnSubscriptionArn=True
-        )
+        subscription = subscribe(email)
         item["subscription"] = subscription["SubscriptionArn"]
 
         return ok_response(item)
@@ -61,6 +55,14 @@ def save_db_record(email):
 
     return item
 
+
+def subscribe(email):
+    return sns.subscribe(
+        TopicArn=topic_arn,
+        Protocol="email",
+        Endpoint=email,
+        ReturnSubscriptionArn=True
+    )
 
 def to_db_item(item):
     db_item = dict()
