@@ -10,6 +10,7 @@ provider:
   region: ap-southeast-1
   environment:
     AWS_USERS_DB_TABLE: project-rutherford-users-table
+    AWS_NEW_SUBSCRIBER_TOPIC_ARN: arn:aws:sns:ap-southeast-1:636933184920:project-rutherford-new-subscriber-topic
 
 custom:
   pythonRequirements:

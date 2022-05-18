@@ -6,7 +6,9 @@ import datetime
 from botocore.exceptions import ClientError
 
 dynamodb = boto3.client("dynamodb")
+sns = boto3.client("sns")
 table_name = os.environ["AWS_USERS_DB_TABLE"]
+topic_arn = os.environ["AWS_NEW_SUBSCRIBER_TOPIC_ARN"]
 
 
 def handler(event, context):
@@ -15,6 +17,15 @@ def handler(event, context):
 
     try:
         item = save_db_record(email)
+
+        subscription = sns.subscribe(
+            TopicArn=topic_arn,
+            Protocol="email",
+            Endpoint=email,
+            ReturnSubscriptionArn=True
+        )
+        item["subscription"] = subscription["SubscriptionArn"]
+
         return ok_response(item)
     except ClientError as error:
         return error_response(error)
