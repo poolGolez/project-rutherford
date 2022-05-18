@@ -10,8 +10,8 @@ Resources:
           Endpoint: rutherford.master@yopmail.com
 
 Outputs:
-  QuotesBucket:
+  TopicArn:
     Description: New Subscriber Topic Name
-    Value: !GetAtt [ NewSubscriberTopic, TopicName ]
+    Value: !Ref NewSubscriberTopic
     Export:
-      Name: !Sub "${AWS::StackName}--NewSubscriber-TopicName"
+      Name: !Sub "${AWS::StackName}--NewSubscriber-ARN"
