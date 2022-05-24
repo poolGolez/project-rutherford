@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation Template for Email DynamoDB
+Resources:
+  EmailTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: project-rutherford-email-table
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: TimestampIndex
+          KeySchema:
+            - AttributeName: timestamp
+              KeyType: HASH
+            - AttributeName: email
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+Outputs:
+  EmailTableName:
+    Description: Name of the Email DynamoDB table
+    Value: !Ref EmailTable
+    Export:
+      Name: !Sub "${AWS::StackName}--EmailTable-Name"
+  EmailTableArn:
+    Description: ARN of the Email DynamoDB table
+    Value: !GetAtt [EmailTable, Arn]
+    Export:
+      Name: !Sub "${AWS::StackName}--EmailTable-ARN"
