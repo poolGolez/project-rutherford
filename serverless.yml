@@ -11,6 +11,7 @@ provider:
   environment:
     AWS_USERS_DB_TABLE: project-rutherford-users-table
     AWS_NEW_SUBSCRIBER_TOPIC_ARN: arn:aws:sns:ap-southeast-1:636933184920:project-rutherford-new-subscriber-topic
+    AWS_EMAIL_QUEUE_URL: https://sqs.ap-southeast-1.amazonaws.com/636933184920/project-rutherford-email-queue
 
 custom:
   pythonRequirements:

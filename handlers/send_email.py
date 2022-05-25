@@ -17,21 +17,29 @@ def load_quotes():
 quotes = load_quotes()
 dynamodb = boto3.client("dynamodb")
 table_name = os.environ["AWS_USERS_DB_TABLE"]
+queue_url = os.environ["AWS_EMAIL_QUEUE_URL"]
+
+
+sqs = boto3.client("sqs")
 
 
 def handler(event, context):
-    quote = pick_quote()
     emails = load_emails()
+    for email in emails:
+        message = json.dumps({
+            "quote": pick_quote(),
+            "email": email
+        })
+        sqs.send_message(
+            QueueUrl=queue_url,
+            MessageBody=message
+        )
 
     return {
-        "statusCode": 200,
+        "statusCode": 204,
         "headers": {
             "Content-type": "application/json"
-        },
-        "body": json.dumps({
-            "quote": quote,
-            "emails": emails
-        })
+        }
     }
 
 
