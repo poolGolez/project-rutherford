@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation Template for email SQS messaging
+Resources:
+  EmailQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: project-rutherford-email-queue
+      KmsMasterKeyId: alias/aws/sqs
+Outputs:
+  EmailQueueName:
+    Description: Email Queue Name
+    Value: !GetAtt [EmailQueue, QueueName]
+    Export:
+      Name: !Sub "${AWS::StackName}--EmailQueue-Name"
