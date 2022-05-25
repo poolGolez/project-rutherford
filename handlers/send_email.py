@@ -2,13 +2,18 @@ import json
 import boto3
 import random
 
-s3 = boto3.resource("s3")
-bucket_name = "project-rutherford-65819"
-object_key = "quotes.json"
-s3_object = s3.Object(bucket_name, object_key).get()
-file_contents = s3_object['Body'].read().decode("utf-8")
-quotes = json.loads(file_contents)["quotes"]
 
+def load_quotes():
+    s3 = boto3.resource("s3")
+    bucket_name = "project-rutherford-65819"
+    object_key = "quotes.json"
+    s3_object = s3.Object(bucket_name, object_key).get()
+    file_contents = s3_object['Body'].read().decode("utf-8")
+    print("Loading quotes")
+    return json.loads(file_contents)["quotes"]
+
+
+quotes = load_quotes()
 def handler(event, context):
     quote = pick_quote()
 
