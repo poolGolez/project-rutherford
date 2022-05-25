@@ -45,7 +45,7 @@ def save_db_record(email):
             {
                 "Put": {
                     "TableName": table_name,
-                    "Item": to_db_item({"PK": f"EMAIL#{email}"}),
+                    "Item": to_db_item({"PK": f"EMAIL#{email}", "email": email}),
                     "ConditionExpression": "attribute_not_exists(#pk)",
                     "ExpressionAttributeNames": {"#pk": "PK"},
                 }
