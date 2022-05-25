@@ -1,5 +1,6 @@
 import json
 import boto3
+import os
 import random
 
 
@@ -14,8 +15,13 @@ def load_quotes():
 
 
 quotes = load_quotes()
+dynamodb = boto3.client("dynamodb")
+table_name = os.environ["AWS_USERS_DB_TABLE"]
+
+
 def handler(event, context):
     quote = pick_quote()
+    emails = load_emails()
 
     return {
         "statusCode": 200,
@@ -23,7 +29,8 @@ def handler(event, context):
             "Content-type": "application/json"
         },
         "body": json.dumps({
-            "quote": quote
+            "quote": quote,
+            "emails": emails
         })
     }
 
@@ -33,3 +40,15 @@ def pick_quote():
     quote = quotes[index]
 
     return quote
+
+
+def load_emails():
+    db_results = dynamodb.scan(
+        TableName=table_name,
+        FilterExpression="begins_with(#pk, :email_prefix)",
+        ExpressionAttributeNames={'#pk': 'PK'},
+        ExpressionAttributeValues={':email_prefix': {'S': 'EMAIL#'}}
+    )
+    emails = [item["email"]["S"] for item in db_results["Items"]]
+
+    return emails
